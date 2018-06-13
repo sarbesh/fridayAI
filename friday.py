@@ -1,5 +1,6 @@
 import speech_recognition as sr
 import pyttsx3 
+import os
 
 speech = sr.Recognizer()
 
@@ -38,7 +39,6 @@ def read_voice_cmd():
     with sr.Microphone() as source:
     #the audio will hold the value for the speech command
         audio = speech.listen(source)
-
     try:  
         voice_text = speech.recognize_google(audio)
     except sr.UnknownValueError:
@@ -53,8 +53,14 @@ if __name__ == '__main__':
     speak_test_cmd('Hello Mr. Sarkar, Am JARVIS your personal virtual assistant ')
 
     while True:
-        voices_note ==read_voice_cmd()
-        print('cmd : ()'.format(voices_note))
+        voice_note = read_voice_cmd()
+        print('cmd : ()'.format(voice_note))
         gret = ['hi','hello','hey',]
-        if any(elem in gret for elem in voices_note):
-            speak_test_cmd()
+        if any(elem in gret for elem in voice_note):
+            speak_test_cmd('Hello sir! How may I help you?')
+            continue
+        elif 'open' in voice_note:
+            os.system('thunar ~/{}'.format(voice_note.replace('Open ','')))
+            continue
+        elif 'bye' in voice_note:
+            speak_test_cmd('Good bye Sir! Have good day.')
